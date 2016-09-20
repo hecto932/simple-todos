@@ -8,12 +8,16 @@ import './body.html';
 
 Template.body.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
+  console.log(this.state);
   Meteor.subscribe('tasks');
 });
 
 Template.body.helpers({
   tasks() {
     const instance = Template.instance();
+    console.log(instance);
+    console.log(instance.state);
+    console.log(instance.state.get('hideCompleted'));
     if (instance.state.get('hideCompleted')) {
       // If hide completed is checked, filter tasks
       return Tasks.find({ checked: { $ne: true } }, { sort: { createdAt: -1 } });
@@ -42,6 +46,8 @@ Template.body.events({
     target.text.value = '';
   },
   'change .hide-completed input'(event, instance) {
+    console.log(event);
+    console.log(instance);
     instance.state.set('hideCompleted', event.target.checked);
   },
 });
